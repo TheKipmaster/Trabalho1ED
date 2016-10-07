@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "pilha.h"
 
 int main () {
@@ -11,6 +12,7 @@ int main () {
 		if (n == 2)
 			funcao2 (&n);
 	}
+	system ("clear");
 
 	return 0;
 }
