@@ -11,7 +11,7 @@ t_pilha* getPilha (int tamanho) {
 }
 
 int pilhaCheia(t_pilha* pilha) {
-	return (pilha->topo == pilha->tamanho);
+	return (pilha->topo == pilha->tamanho-1);
 }
 
 void push (t_pilha* pilha, int valor) {
@@ -19,8 +19,11 @@ void push (t_pilha* pilha, int valor) {
 		pilha->topo++;
 		pilha->vetor[pilha->topo] = valor;
 	}
-	else
+	else {
 		printf("PILHA SOBRECARREGADA\n");
+		getchar();
+		getchar();
+	}
 }
 
 void imprimePilha (t_pilha *pilha) {
@@ -55,6 +58,7 @@ void funcao1 (int *n) {
 	push (pilha, 6);
 	push (pilha, 2);
 	push (pilha, 3);
+	push (pilha, 5);
 
 	imprimePilha (pilha);
 	getchar();
