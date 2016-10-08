@@ -20,7 +20,9 @@ int      pop (t_pilha* pilha);
 
 void     imprimePilha (t_pilha *pilha);
 
-int      pilhaVazia(t_pilha* pilha);
-int      pilhaCheia(t_pilha* pilha);
+int      pilhaVazia (t_pilha* pilha);
+int      pilhaCheia (t_pilha* pilha);
+
+int		 validaExpressao (char expressao[]);
 
 #endif

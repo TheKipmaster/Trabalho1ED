@@ -10,8 +10,12 @@ t_pilha* getPilha (int tamanho) {
 	return pilha;
 }
 
-int pilhaCheia(t_pilha* pilha) {
+int pilhaCheia (t_pilha* pilha) {
 	return (pilha->topo == pilha->tamanho-1);
+}
+
+int pilhaVazia (t_pilha* pilha) {
+	return (pilha->topo == -1);
 }
 
 void push (t_pilha* pilha, int valor) {
@@ -20,10 +24,21 @@ void push (t_pilha* pilha, int valor) {
 		pilha->vetor[pilha->topo] = valor;
 	}
 	else {
-		printf("PILHA SOBRECARREGADA\n");
+		printf("OVERFLOW\n");
 		getchar();
 		getchar();
 	}
+}
+
+int pop (t_pilha *pilha) {
+	if (pilhaVazia) {
+		printf ("UNDERFLOW\n");
+		getchar();
+		getchar();
+		exit(1);
+	}
+	else
+		return pilha->vetor[pilha->topo--];
 }
 
 void imprimePilha (t_pilha *pilha) {
@@ -33,6 +48,51 @@ void imprimePilha (t_pilha *pilha) {
 		printf("i = %d\n", i);
 		printf("item = %d\n", pilha->vetor[i]);
 	}
+}
+
+int validaExpressao (char expressao[]) {
+	int valida=1, tamanho=0, i=0;
+	char c;
+
+	for (i = 0; expressao[i] != '\0'; ++i) { /*conta quantos parenteses existem na expressao*/
+		if (expressao[i] == '(' || expressao[i] == ')' || expressao[i] == '[' || expressao[i] == ']' || expressao[i] == '{' || expressao[i] == '}')
+			tamanho++;
+	}
+
+	t_pilha *pilha = getPilha(tamanho);
+
+	if (tamanho%2) /*se 'tamanho' for impar a expressao sempre sera invalida*/
+		valida=0;
+
+	while (valida && expressao[i] != '\0') {
+		if (expressao[i] == '(' || expressao[i] == '[' || expressao[i] == '{')
+			push(pilha, (int) expressao[i]);
+		if (expressao[i] == ')' || expressao[i] == ']' || expressao[i] == '}') {
+			if (pilhaVazia(pilha))
+				valida = 0;
+			else {
+				c = (char) pop(pilha);
+
+                switch(expressao[i]){
+                    case ')':
+                        if( c != '(' )
+                            valida = 0;
+                        break;
+                    case ']':
+                        if( c != '[' )
+                            valida = 0;
+                        break;
+                    case '}':
+                        if( c != '{' )
+                            valida = 0;
+                        break;
+                }
+			}
+		}
+		i++;
+	}
+
+	return valida;
 }
 
 int drawMenu (int *n) {
@@ -51,18 +111,27 @@ int drawMenu (int *n) {
 }
 
 void funcao1 (int *n) {
-	t_pilha *pilha = getPilha (5);
-	
-	push (pilha, 1);
-	push (pilha, 8);
-	push (pilha, 6);
-	push (pilha, 2);
-	push (pilha, 3);
-	push (pilha, 5);
+	char expressao[50];
+	int i;
 
-	imprimePilha (pilha);
 	getchar();
-	getchar();
+	system("clear");
+	printf("DIGITE A EXPRESSAO A SER CALCULADA\n");
+	scanf("%[^\n]", expressao);
+
+	if (validaExpressao (expressao)) {
+		printf("EXPRESSAO VALIDA\n");
+		getchar();
+		getchar();
+		/*posfixar(expressao);
+		calcular();*/
+	}
+	else {
+		printf("EXPRESSAO INVALIDA. RETORNANDO AO MENU\n");
+		getchar();
+		getchar();
+	}
+
 
 	drawMenu(n);
 }
