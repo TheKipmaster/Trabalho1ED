@@ -1,9 +1,10 @@
 #include <stdio.h>
 
 int main () {
-	char nome[20] = "Felippe";
+	char n = 5, m = 9;
+	int i = (int)(n-'0') + (int)(m-'0');
 
-	printf("%s\n", nome);
+	printf("%d\n", i);
 
 	return 0;
 }

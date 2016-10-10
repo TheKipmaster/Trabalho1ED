@@ -24,8 +24,6 @@ void push (t_pilha* pilha, int valor) {
 	}
 	else {
 		printf("OVERFLOW\n");
-		getchar();
-		getchar();
 		/*liberaPilha()!*/
 		exit(1);
 	}
@@ -34,8 +32,6 @@ void push (t_pilha* pilha, int valor) {
 int pop (t_pilha *pilha) {
 	if (pilhaVazia(pilha)) {
 		printf ("UNDERFLOW\n");
-		getchar();
-		getchar();
 		/*liberaPilha()!*/
 		exit(1);
 	}
@@ -43,10 +39,44 @@ int pop (t_pilha *pilha) {
 		return pilha->vetor[pilha->topo--];
 }
 
-void desemPilha (t_pilha *pilha, char parentese, char saida[], int *j) {
-	char c;
+void calculaExpressao (char e_posfixa[]) {
+	t_pilha *pilha = getPilha(50); /*implementar alocacao dinamica*/
+	int i=0, primeiro, segundo;
 
-	while (pilha->vetor[pilha->topo] != parentese) {
+	while (e_posfixa[i] != '\0') {
+		if (e_posfixa[i] == '+' || e_posfixa[i] == '-' || e_posfixa[i] == '*' || e_posfixa[i] == '/') {
+			primeiro = (int) pop(pilha);
+			segundo  = (int) pop(pilha);
+			switch (e_posfixa[i]) {
+				case '+':
+					push(pilha, (char) segundo+primeiro);
+					break;
+				case '-':
+					push(pilha, (char) segundo-primeiro);
+					break;
+				case '*':
+					push(pilha, (char) segundo*primeiro);
+					break;
+				case '/':
+					push(pilha, (char) segundo/primeiro);
+					break;
+			}
+			i++;
+		}
+		else {
+			push(pilha, (int) e_posfixa[i++]-'0');
+		}
+	}
+	i = (int) pop(pilha);
+	printf("=%d\n", i);
+	getchar();
+}
+
+int desemPilha (t_pilha *pilha, char parentese, char saida[], int *j) {
+	char c;
+	int valida=1;
+
+	while (pilha->vetor[pilha->topo] != parentese ) {
 		c = (char) pop (pilha);
 		saida[(*j)++] = c;
 	}
@@ -54,17 +84,16 @@ void desemPilha (t_pilha *pilha, char parentese, char saida[], int *j) {
 }
 
 void imprimePilha (t_pilha *pilha) {
-	system ("clear");
 	int i = pilha->topo;
 	for (i; i > -1; i--) {
-		printf("i = %d\n", i);
+		printf("i = %d;", i);
 		printf("item = %d\n", pilha->vetor[i]);
 	}
 } /*liberaPilha()?*/
 
-char posfixaExpressao (char expressao[], int *tamanho) {
+void posfixaExpressao (char expressao[], int *tamanho, char saida[]) {
 	t_pilha *pilha = getPilha(30); /*implementar alocacao dinamica*/
-	char saida[50], c;
+	char c;
 	int i=0, j=0;
 
 	while (expressao[i] != '\0') {
@@ -75,7 +104,6 @@ char posfixaExpressao (char expressao[], int *tamanho) {
 					c = (char) pop(pilha);
 					saida[j] = c;
 					j++;
-					printf("-/+\n");
 				}
 				push(pilha, (int) expressao[i++]);
 				break;
@@ -113,19 +141,17 @@ char posfixaExpressao (char expressao[], int *tamanho) {
 		c = (char) pop(pilha);
 		saida[j++] = c;
 	}
-
 	saida[j] = '\0';
+
 	printf("%s", saida);
 	getchar();
-
-	return *saida;
 }/*liberaPilha()!*/
 
 int validaExpressao (char expressao[], int* tamanho) {
 	int valida=1, i=0;
 	char c;
 
-	for (i = 0; expressao[i] != '\0'; ++i) { /*conta quantos parenteses existem na expressao*/
+	for (i; expressao[i] != '\0'; ++i) { /*conta quantos parenteses existem na expressao*/
 		if (expressao[i] == '(' || expressao[i] == ')' || expressao[i] == '[' || expressao[i] == ']' || expressao[i] == '{' || expressao[i] == '}')
 			(*tamanho)++;
 	}
@@ -135,12 +161,16 @@ int validaExpressao (char expressao[], int* tamanho) {
 	if (*tamanho%2) /*se 'tamanho' for impar a expressao sempre sera invalida*/
 		valida=0;
 
+	i=0;
 	while (valida && expressao[i] != '\0') {
-		if (expressao[i] == '(' || expressao[i] == '[' || expressao[i] == '{')
+		if (expressao[i] == '(' || expressao[i] == '[' || expressao[i] == '{') {
 			push(pilha, (int) expressao[i]);
+			}
+
 		if (expressao[i] == ')' || expressao[i] == ']' || expressao[i] == '}') {
-			if (pilhaVazia(pilha))
+			if (pilhaVazia(pilha)) {
 				valida = 0;
+			}
 			else {
 				c = (char) pop(pilha);
 
@@ -182,7 +212,7 @@ int drawMenu (int *n) {
 }
 
 void funcao1 (int *n) {
-	char expressao[50];
+	char expressao[50], saida[50];
 	int i, tamanho=0;
 
 	getchar();
@@ -194,8 +224,8 @@ void funcao1 (int *n) {
 		printf("EXPRESSAO VALIDA");
 		getchar();
 		getchar();
-		posfixaExpressao (expressao, &tamanho);
-		/*calculaExpressao();*/
+		posfixaExpressao (expressao, &tamanho, saida);
+		calculaExpressao(saida);
 	}
 	else {
 		printf("EXPRESSAO INVALIDA. RETORNANDO AO MENU\n");
