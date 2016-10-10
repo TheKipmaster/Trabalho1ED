@@ -10,6 +10,11 @@ t_pilha* getPilha (int tamanho) {
 	return pilha;
 }
 
+void liberaPilha (t_pilha* pilha) {
+	free(pilha->vetor);
+	free(pilha);
+}
+
 int pilhaCheia (t_pilha* pilha) {
 	return (pilha->topo == pilha->tamanho-1);
 }
@@ -24,7 +29,7 @@ void push (t_pilha* pilha, int valor) {
 	}
 	else {
 		printf("OVERFLOW\n");
-		/*liberaPilha()!*/
+		liberaPilha(pilha);
 		exit(1);
 	}
 }
@@ -32,7 +37,7 @@ void push (t_pilha* pilha, int valor) {
 int pop (t_pilha *pilha) {
 	if (pilhaVazia(pilha)) {
 		printf ("UNDERFLOW\n");
-		/*liberaPilha()!*/
+		liberaPilha(pilha);
 		exit(1);
 	}
 	else
@@ -70,6 +75,7 @@ void calculaExpressao (char e_posfixa[]) {
 	i = (int) pop(pilha);
 	printf("=%d\n", i);
 	getchar();
+	liberaPilha(pilha);
 }
 
 int desemPilha (t_pilha *pilha, char parentese, char saida[], int *j) {
@@ -145,7 +151,8 @@ void posfixaExpressao (char expressao[], int *tamanho, char saida[]) {
 
 	printf("%s", saida);
 	getchar();
-}/*liberaPilha()!*/
+	liberaPilha(pilha);
+}
 
 int validaExpressao (char expressao[], int* tamanho) {
 	int valida=1, i=0;
@@ -192,9 +199,10 @@ int validaExpressao (char expressao[], int* tamanho) {
 		}
 		i++;
 	}
+	liberaPilha(pilha);
 
 	return valida;
-}/*liberaPilha()!*/
+}
 
 int drawMenu (int *n) {
 
@@ -232,8 +240,6 @@ void funcao1 (int *n) {
 		getchar();
 		getchar();
 	}
-
-
 	drawMenu(n);
 }
 
