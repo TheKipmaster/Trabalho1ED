@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "funcoes.h"
 
 t_pilha* getPilha (int tamanho) {
@@ -231,8 +232,8 @@ int drawMenu (int *n) {
 	do {
 		scanf ("%d", n);
 		if ( (*n > 3) || (*n < 1) )
-			printf ("ENTRADA INVALIDA\n");  	/*'n' eh passado a td funcao do menu para que este possa ser desenhado a qualquer momento*/
-	} while ( (*n > 3) || (*n < 1) );
+			printf ("ENTRADA INVALIDA\n");  	/*'n' eh passado a td funcao do menu para que*/
+	} while ( (*n > 3) || (*n < 1) );           /*este possa ser desenhado a qualquer momento*/
 	
 	return *n;
 }
@@ -263,12 +264,12 @@ void funcao1 (int *n) {
 
 void funcao2 (int *n) {
 	t_pilha *pilha = getPilha(30);
-	char r_o;
-	int entrada, i;
+	char entrada[4];
+	int i, primeiro, segundo;
 
-	/*while (r_o != 's' && r_o != 'S') {
+	do {
 		system("clear");
-		printf("MODO CALCULADORA. DIGITE 'S' PARA RETORNAR AO MENU\n");
+		printf("MODO CALCULADORA. DIGITE 'SAIR' PARA RETORNAR AO MENU\n");
 		if (pilhaVazia(pilha))
 			printf("PILHA VAZIA\n");
 		else {
@@ -277,11 +278,10 @@ void funcao2 (int *n) {
 			}
 		}
 		printf("->");
-		scanf("%d", &entrada);
-		scanf("%c", &r_o);
-		if (r_o == '+' || r_o == '-' || r_o == '/' || r_o == '*' || r_o == 'c' || r_o == '!') {
+		scanf("%s", entrada);
+		if (entrada[0] == '+' || entrada[0] == '-' || entrada[0] == '/' || entrada[0] == '*' || entrada[0] == 'c' || entrada[0] == '!') {
 			if (pilha->topo > 0) {
-				switch (r_o) {
+				switch (entrada[0]) {
 					case '+':
 						push(pilha, segundo+primeiro);
 						break;
@@ -305,8 +305,8 @@ void funcao2 (int *n) {
 			}
 		}
 		else
-			push (pilha, entrada);
-	}*/
+			push (pilha, entrada[0]);
+	} while (strcmp (entrada, "SAIR") && strcmp (entrada, "sair"));
 
 	drawMenu(n);
 }

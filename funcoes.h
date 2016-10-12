@@ -1,5 +1,5 @@
-#ifndef PILHA_H
-#define PILHA_H
+#ifndef FUNCOES_H
+#define FUNCOES_H
 
 typedef struct pilha {
 	int topo;
