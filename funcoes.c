@@ -61,7 +61,7 @@ void calculaExpressao (char e_posfixa[]) {
 					break;
 				case '-':
 					push(pilha, segundo-primeiro);
-					break;
+					break;									/*refatorar (funcao2)*/
 				case '*':
 					push(pilha, segundo*primeiro);
 					break;
@@ -265,7 +265,7 @@ void funcao1 (int *n) {
 void funcao2 (int *n) {
 	t_pilha *pilha = getPilha(30);
 	char entrada[10];
-	int i, primeiro, segundo;
+	int i=0, primeiro, segundo;
 
 	do {
 		system("clear");
@@ -278,24 +278,27 @@ void funcao2 (int *n) {
 		}
 		printf("->");
 		scanf("%s", entrada);
-		if (entrada[0] == '+' || entrada[0] == '-' || entrada[0] == '/' || 
-			entrada[0] == '*' || entrada[0] == 'c' || entrada[0] == '!') {
+		if (!strcmp (entrada, "+") || !strcmp (entrada, "-") || !strcmp (entrada, "/") || 
+			!strcmp (entrada, "*") || !strcmp (entrada, "c") ){
 			if (pilha->topo > 0) {
+				primeiro = pop(pilha);
+				segundo  = pop(pilha);
 				switch (entrada[0]) {
 					case '+':
 						push(pilha, segundo+primeiro);
 						break;
 					case '-':
 						push(pilha, segundo-primeiro);
-						break;
+						break;									/*refatorar (calculaExpressao)*/
 					case '*':
 						push(pilha, segundo*primeiro);
 						break;
 					case '/':
 						push(pilha, segundo/primeiro);
 					break;
-					case '!':
 					case 'c':
+						for (i=primeiro; i > 0; i--)
+							push(pilha, segundo);
 					break;
 				}
 			}
@@ -303,6 +306,12 @@ void funcao2 (int *n) {
 				printf("NUMERO DE OPERANDOS INSUFICIENTE\n");
 				getchar();
 				getchar();
+			}
+		}
+		if (!strcmp (entrada, "+!") || !strcmp (entrada, "-!") || 
+			!strcmp (entrada, "/!") || !strcmp (entrada, "*!") ){
+			while (!pilhaVazia(pilha)) {
+				
 			}
 		}
 		else {
