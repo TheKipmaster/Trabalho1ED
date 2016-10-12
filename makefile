@@ -5,7 +5,7 @@ BIN=pilha
 
 all: main
 
-funcoes.o: pilha.h funcoes.c
+funcoes.o: funcoes.h funcoes.c
 	${CC} -c -g funcoes.c -lm
 
 main: main.c ${OBJ}

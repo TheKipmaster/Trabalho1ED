@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pilha.h"
+#include "funcoes.h"
 
 t_pilha* getPilha (int tamanho) {
 	t_pilha *pilha = (t_pilha *) malloc (sizeof (t_pilha));
@@ -50,20 +50,20 @@ void calculaExpressao (char e_posfixa[]) {
 
 	while (e_posfixa[i] != '\0') {
 		if (e_posfixa[i] == '+' || e_posfixa[i] == '-' || e_posfixa[i] == '*' || e_posfixa[i] == '/') {
-			primeiro = (int) pop(pilha);
-			segundo  = (int) pop(pilha);
+			primeiro = pop(pilha);
+			segundo  = pop(pilha);
 			switch (e_posfixa[i]) {
 				case '+':
-					push(pilha, (char) segundo+primeiro);
+					push(pilha, segundo+primeiro);
 					break;
 				case '-':
-					push(pilha, (char) segundo-primeiro);
+					push(pilha, segundo-primeiro);
 					break;
 				case '*':
-					push(pilha, (char) segundo*primeiro);
+					push(pilha, segundo*primeiro);
 					break;
 				case '/':
-					push(pilha, (char) segundo/primeiro);
+					push(pilha, segundo/primeiro);
 					break;
 			}
 			i++;
@@ -85,6 +85,7 @@ int desemPilha (t_pilha *pilha, char parentese, char saida[], int *j) {
 	while (pilha->vetor[pilha->topo] != parentese ) {
 		c = (char) pop (pilha);
 		saida[(*j)++] = c;
+		saida[(*j)++] = ' ';
 	}
 	c = (char) pop(pilha);
 }
@@ -106,10 +107,11 @@ void posfixaExpressao (char expressao[], int *tamanho, char saida[]) {
 	    switch (expressao[i]) {
 	        case '+':
 	        case '-':
-				while (pilha->vetor[pilha->topo] == '+' || pilha->vetor[pilha->topo] == '-' || pilha->vetor[pilha->topo] == '*' || pilha->vetor[pilha->topo] == '/') {
+				while (pilha->vetor[pilha->topo] == '+' || pilha->vetor[pilha->topo] == '-' || 
+					pilha->vetor[pilha->topo] == '*' || pilha->vetor[pilha->topo] == '/') {
 					c = (char) pop(pilha);
-					saida[j] = c;
-					j++;
+					saida[j++] = c;
+					saida[j++] = ' ';
 				}
 				push(pilha, (int) expressao[i++]);
 				break;
@@ -139,15 +141,22 @@ void posfixaExpressao (char expressao[], int *tamanho, char saida[]) {
 				desemPilha(pilha, '{', saida, &j);
 				i++;
 				break;
+			case ' ':
+				i++;
+				break;
 			default:
-				saida[j++] = expressao[i++];
+				saida[j++] = expressao[i];
+				if (expressao[i+1] < 48 || expressao[i+1] > 57)
+					saida[j++] = ' ';
+				i++;
 	    }
 	}
 	while (!pilhaVazia(pilha)) {
 		c = (char) pop(pilha);
 		saida[j++] = c;
+		saida[j++] = ' ';
 	}
-	saida[j] = '\0';
+	saida[--j] = '\0';
 
 	printf("%s", saida);
 	getchar();
@@ -159,7 +168,8 @@ int validaExpressao (char expressao[], int* tamanho) {
 	char c;
 
 	for (i; expressao[i] != '\0'; ++i) { /*conta quantos parenteses existem na expressao*/
-		if (expressao[i] == '(' || expressao[i] == ')' || expressao[i] == '[' || expressao[i] == ']' || expressao[i] == '{' || expressao[i] == '}')
+		if (expressao[i] == '(' || expressao[i] == ')' || expressao[i] == '[' || 
+			expressao[i] == ']' || expressao[i] == '{' || expressao[i] == '}')
 			(*tamanho)++;
 	}
 
@@ -244,5 +254,51 @@ void funcao1 (int *n) {
 }
 
 void funcao2 (int *n) {
+	t_pilha *pilha = getPilha(30);
+	char r_o;
+	int entrada, i;
+
+	/*while (r_o != 's' && r_o != 'S') {
+		system("clear");
+		printf("MODO CALCULADORA. DIGITE 'S' PARA RETORNAR AO MENU\n");
+		if (pilhaVazia(pilha))
+			printf("PILHA VAZIA\n");
+		else {
+			for (i = pilha->topo; i > -1; i--) {
+				printf("%d. %d\n", pilha->topo+1, pilha->vetor[pilha->topo]);		
+			}
+		}
+		printf("->");
+		scanf("%d", &entrada);
+		scanf("%c", &r_o);
+		if (r_o == '+' || r_o == '-' || r_o == '/' || r_o == '*' || r_o == 'c' || r_o == '!') {
+			if (pilha->topo > 0) {
+				switch (r_o) {
+					case '+':
+						push(pilha, segundo+primeiro);
+						break;
+					case '-':
+						push(pilha, segundo-primeiro);
+						break;
+					case '*':
+						push(pilha, segundo*primeiro);
+						break;
+					case '/':
+						push(pilha, segundo/primeiro);
+					break;
+					case '!':
+					case 'c':
+					break;
+				}
+			}
+			else {
+				printf("NUMERO DE OPERADORES INSUFICIENTE\n");
+				getchar();
+			}
+		}
+		else
+			push (pilha, entrada);
+	}*/
+
 	drawMenu(n);
 }
