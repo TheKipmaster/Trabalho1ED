@@ -74,7 +74,7 @@ void calculaExpressao (char e_posfixa[]) {
 		else {
 			push(pilha, (int) e_posfixa[i++]-'0');
 			if (e_posfixa[i] >= 48 && e_posfixa[i] <= 57) {
-				while (e_posfixa[i] != ' ') {
+				while (e_posfixa[i] != ' ') {						/*refatorar (funcao2)*/
 					primeiro = pop(pilha)*10 + e_posfixa[i++]-'0';
 					push(pilha, primeiro);
 				}
@@ -117,7 +117,7 @@ void posfixaExpressao (char expressao[], int *tamanho, char saida[]) {
 	        case '+':
 	        case '-':
 				while (pilha->vetor[pilha->topo] == '+' || pilha->vetor[pilha->topo] == '-' || 
-					pilha->vetor[pilha->topo] == '*' || pilha->vetor[pilha->topo] == '/') {
+					   pilha->vetor[pilha->topo] == '*' || pilha->vetor[pilha->topo] == '/') {
 					c = (char) pop(pilha);
 					saida[j++] = c;
 					saida[j++] = ' ';
@@ -264,7 +264,7 @@ void funcao1 (int *n) {
 
 void funcao2 (int *n) {
 	t_pilha *pilha = getPilha(30);
-	char entrada[4];
+	char entrada[10];
 	int i, primeiro, segundo;
 
 	do {
@@ -273,13 +273,13 @@ void funcao2 (int *n) {
 		if (pilhaVazia(pilha))
 			printf("PILHA VAZIA\n");
 		else {
-			for (i = pilha->topo; i > -1; i--) {
-				printf("%d. %d\n", pilha->topo+1, pilha->vetor[pilha->topo]);		
-			}
+			for (i = pilha->topo; i > -1; i--) 
+				printf("%d. %d\n", i+1, pilha->vetor[pilha->topo-i]);
 		}
 		printf("->");
 		scanf("%s", entrada);
-		if (entrada[0] == '+' || entrada[0] == '-' || entrada[0] == '/' || entrada[0] == '*' || entrada[0] == 'c' || entrada[0] == '!') {
+		if (entrada[0] == '+' || entrada[0] == '-' || entrada[0] == '/' || 
+			entrada[0] == '*' || entrada[0] == 'c' || entrada[0] == '!') {
 			if (pilha->topo > 0) {
 				switch (entrada[0]) {
 					case '+':
@@ -300,13 +300,23 @@ void funcao2 (int *n) {
 				}
 			}
 			else {
-				printf("NUMERO DE OPERADORES INSUFICIENTE\n");
+				printf("NUMERO DE OPERANDOS INSUFICIENTE\n");
+				getchar();
 				getchar();
 			}
 		}
-		else
-			push (pilha, entrada[0]);
+		else {
+			i=0;
+			push(pilha, (int) entrada[i++]-'0');
+			if (entrada[i] >= 48 && entrada[i] <= 57) {
+				while (entrada[i] != '\0') {							/*refatorar (calculaExpressao)*/
+					primeiro = pop(pilha)*10 + entrada[i++]-'0';
+					push(pilha, primeiro);
+				}
+			}
+		}
 	} while (strcmp (entrada, "SAIR") && strcmp (entrada, "sair"));
+	liberaPilha(pilha);
 
 	drawMenu(n);
 }
