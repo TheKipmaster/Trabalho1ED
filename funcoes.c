@@ -49,6 +49,8 @@ void calculaExpressao (char e_posfixa[]) {
 	int i=0, primeiro, segundo;
 
 	while (e_posfixa[i] != '\0') {
+		if (e_posfixa[i] == ' ') 
+			i++;
 		if (e_posfixa[i] == '+' || e_posfixa[i] == '-' || e_posfixa[i] == '*' || e_posfixa[i] == '/') {
 			primeiro = pop(pilha);
 			segundo  = pop(pilha);
@@ -70,6 +72,12 @@ void calculaExpressao (char e_posfixa[]) {
 		}
 		else {
 			push(pilha, (int) e_posfixa[i++]-'0');
+			if (e_posfixa[i] >= 48 && e_posfixa[i] <= 57) {
+				while (e_posfixa[i] != ' ') {
+					primeiro = pop(pilha)*10 + e_posfixa[i++]-'0';
+					push(pilha, primeiro);
+				}
+			}
 		}
 	}
 	i = (int) pop(pilha);
