@@ -295,11 +295,11 @@ void funcao2 (int *n) {
 						break;
 					case '/':
 						push(pilha, segundo/primeiro);
-					break;
+						break;
 					case 'c':
 						for (i=primeiro; i > 0; i--)
 							push(pilha, segundo);
-					break;
+						break;
 				}
 			}
 			else {
@@ -308,20 +308,44 @@ void funcao2 (int *n) {
 				getchar();
 			}
 		}
-		if (!strcmp (entrada, "+!") || !strcmp (entrada, "-!") || 
-			!strcmp (entrada, "/!") || !strcmp (entrada, "*!") ){
-			while (!pilhaVazia(pilha)) {
-				
+		else if(!strcmp (entrada, "+!") || !strcmp (entrada, "-!") || 
+			    !strcmp (entrada, "/!") || !strcmp (entrada, "*!") ){
+			if (pilha->topo > 0) {
+				while (pilha->topo != 0) {
+					primeiro = pop(pilha);
+					segundo  = pop(pilha);
+					switch (entrada[0]) {
+						case '+':
+							push(pilha, segundo+primeiro);
+							break;
+						case '-':
+							push(pilha, segundo-primeiro);
+							break;									/*refatorar (calculaExpressao)*/
+						case '*':
+							push(pilha, segundo*primeiro);
+							break;
+						case '/':
+							push(pilha, segundo/primeiro);
+							break;
+					}
+				}
 			}
 		}
 		else {
-			i=0;
+			if (entrada[0] != '-')
+				i=0;
+			else
+				i=1;
 			push(pilha, (int) entrada[i++]-'0');
 			if (entrada[i] >= 48 && entrada[i] <= 57) {
 				while (entrada[i] != '\0') {							/*refatorar (calculaExpressao)*/
 					primeiro = pop(pilha)*10 + entrada[i++]-'0';
 					push(pilha, primeiro);
 				}
+			}
+			if (entrada[0] == '-') {
+				primeiro = pop(pilha);
+				push(pilha, -primeiro);
 			}
 		}
 	} while (strcmp (entrada, "SAIR") && strcmp (entrada, "sair"));
