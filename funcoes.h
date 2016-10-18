@@ -28,5 +28,6 @@ void	 posfixaExpressao (char expressao[], int *tamanho, char saida[]);
 void 	 calculaExpressao (char e_posfixa[]);
 
 void 	 empilhaNumero (t_pilha *pilha, int *i, char string[]);
+void	 operaNumero   (t_pilha *pilha, int *i, char string[]);
 
 #endif

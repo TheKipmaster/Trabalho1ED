@@ -45,6 +45,31 @@ int pop (t_pilha *pilha) {
 		return pilha->vetor[pilha->topo--];
 }
 
+void operaNumero (t_pilha *pilha, int *i, char string[]) {
+	int primeiro, segundo;
+
+	primeiro = pop(pilha);
+	segundo  = pop(pilha);
+	switch (string[*i]) {
+		case '+':
+			push(pilha, segundo+primeiro);
+			break;
+		case '-':
+			push(pilha, segundo-primeiro);
+			break;
+		case '*':
+			push(pilha, segundo*primeiro);
+			break;
+		case '/':
+			push(pilha, segundo/primeiro);
+			break;
+		case 'c':
+			for (*i=primeiro; *i > 0; (*i)--)
+				push(pilha, segundo);
+			break;
+	}
+}
+
 void empilhaNumero (t_pilha *pilha, int *i, char string[]) {
 	int n;
 
@@ -65,22 +90,7 @@ void calculaExpressao (char e_posfixa[]) {
 		if (e_posfixa[i] == ' ') 
 			i++;
 		if (e_posfixa[i] == '+' || e_posfixa[i] == '-' || e_posfixa[i] == '*' || e_posfixa[i] == '/') {
-			primeiro = pop(pilha);
-			segundo  = pop(pilha);
-			switch (e_posfixa[i]) {
-				case '+':
-					push(pilha, segundo+primeiro);
-					break;
-				case '-':
-					push(pilha, segundo-primeiro);
-					break;									/*refatorar (funcao2)*/
-				case '*':
-					push(pilha, segundo*primeiro);
-					break;
-				case '/':
-					push(pilha, segundo/primeiro);
-					break;
-			}
+			operaNumero (pilha, &i, e_posfixa);
 			i++;
 		}
 		else
@@ -286,26 +296,8 @@ void funcao2 (int *n) {
 		if (!strcmp (entrada, "+") || !strcmp (entrada, "-") || !strcmp (entrada, "/") || 
 			!strcmp (entrada, "*") || !strcmp (entrada, "c") ){
 			if (pilha->topo > 0) {
-				primeiro = pop(pilha);
-				segundo  = pop(pilha);
-				switch (entrada[0]) {
-					case '+':
-						push(pilha, segundo+primeiro);
-						break;
-					case '-':
-						push(pilha, segundo-primeiro);
-						break;									/*refatorar (calculaExpressao)*/
-					case '*':
-						push(pilha, segundo*primeiro);
-						break;
-					case '/':
-						push(pilha, segundo/primeiro);
-						break;
-					case 'c':
-						for (i=primeiro; i > 0; i--)
-							push(pilha, segundo);
-						break;
-				}
+				i=0;
+				operaNumero (pilha, &i, entrada);
 			}
 			else {
 				printf("NUMERO DE OPERANDOS INSUFICIENTE\n");
@@ -317,22 +309,8 @@ void funcao2 (int *n) {
 			    !strcmp (entrada, "/!") || !strcmp (entrada, "*!") ){
 			if (pilha->topo > 0) {
 				while (pilha->topo != 0) {
-					primeiro = pop(pilha);
-					segundo  = pop(pilha);
-					switch (entrada[0]) {
-						case '+':
-							push(pilha, segundo+primeiro);
-							break;
-						case '-':
-							push(pilha, segundo-primeiro);
-							break;									/*refatorar (calculaExpressao)*/
-						case '*':
-							push(pilha, segundo*primeiro);
-							break;
-						case '/':
-							push(pilha, segundo/primeiro);
-							break;
-					}
+					i=0;
+					operaNumero (pilha, &i, entrada);
 				}
 			}
 		}
