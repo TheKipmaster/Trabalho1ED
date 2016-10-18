@@ -45,6 +45,18 @@ int pop (t_pilha *pilha) {
 		return pilha->vetor[pilha->topo--];
 }
 
+void empilhaNumero (t_pilha *pilha, int *i, char string[]) {
+	int n;
+
+	push(pilha, (int) string[(*i)++]-'0');
+	if (string[*i] >= 48 && string[*i] <= 57) {
+		while (string[*i] != ' ') {
+			n = pop(pilha)*10 + string[(*i)++]-'0';
+			push(pilha, n);
+		}
+	}
+}
+
 void calculaExpressao (char e_posfixa[]) {
 	t_pilha *pilha = getPilha(50); /*implementar alocacao dinamica*/
 	int i=0, primeiro, segundo;
@@ -71,15 +83,8 @@ void calculaExpressao (char e_posfixa[]) {
 			}
 			i++;
 		}
-		else {
-			push(pilha, (int) e_posfixa[i++]-'0');
-			if (e_posfixa[i] >= 48 && e_posfixa[i] <= 57) {
-				while (e_posfixa[i] != ' ') {						/*refatorar (funcao2)*/
-					primeiro = pop(pilha)*10 + e_posfixa[i++]-'0';
-					push(pilha, primeiro);
-				}
-			}
-		}
+		else
+			empilhaNumero (pilha, &i, e_posfixa);
 	}
 	i = (int) pop(pilha);
 	printf("=%d\n", i);
@@ -336,13 +341,7 @@ void funcao2 (int *n) {
 				i=0;
 			else
 				i=1;
-			push(pilha, (int) entrada[i++]-'0');
-			if (entrada[i] >= 48 && entrada[i] <= 57) {
-				while (entrada[i] != '\0') {							/*refatorar (calculaExpressao)*/
-					primeiro = pop(pilha)*10 + entrada[i++]-'0';
-					push(pilha, primeiro);
-				}
-			}
+			empilhaNumero (pilha, &i, entrada);
 			if (entrada[0] == '-') {
 				primeiro = pop(pilha);
 				push(pilha, -primeiro);
