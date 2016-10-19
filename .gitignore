@@ -1,5 +1,7 @@
 teste.c
 a.out
-pilha
-funcoes.o
+Calculadora_Polonesa
+expressao.o
+pilha.o
 doxygen_config
+pilha

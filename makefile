@@ -1,15 +1,19 @@
 CC=gcc
 
-OBJ=funcoes.o
-BIN=pilha
+OBJ1=expressao.o
+OBJ2=pilha.o
+BIN=Calculadora_Polonesa
 
 all: main
 
-funcoes.o: funcoes.h funcoes.c
-	${CC} -c -g funcoes.c -lm
+pilha.o: funcoes.h pilha.c
+	${CC} -c -g pilha.c -lm
 
-main: main.c ${OBJ}
-	${CC} -g -ansi -Wall -o ${BIN} main.c ${OBJ} -lm
+expressao.o: funcoes.h expressao.c
+	${CC} -c -g expressao.c -lm
 
-clean: ${BIN} ${OBJ}
-	rm -rf ${BIN} ${OBJ}
+main: main.c ${OBJ1} ${OBJ2}
+	${CC} -g -ansi -Wall -o ${BIN} main.c ${OBJ1} ${OBJ2} -lm
+
+clean: ${BIN} ${OBJ1}
+	rm -rf ${BIN} ${OBJ1} ${OBJ2}
