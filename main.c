@@ -3,6 +3,10 @@
 #include <string.h>
 #include "funcoes.h"
 
+/**
+* Desenha o menu e valida a entrada do usuário quanto ao seus ítens.
+*/
+
 int drawMenu (int *n) {
 
 	system("clear");
@@ -17,6 +21,12 @@ int drawMenu (int *n) {
 	
 	return *n;
 }
+
+/**
+* Usa as funções de manipulação de pilhas e as presentes 
+* no arquivo 'expressao.c' para validar, transformar para
+* forma posfixa e então resolver uma expressão dada.
+*/
 
 void funcao1 (int *n) {
 	char expressao[50], saida[50];
@@ -41,6 +51,11 @@ void funcao1 (int *n) {
 	}
 	drawMenu(n);
 }
+
+/**
+* Usa as funções de manipulação de pilhas e as presentes no arquivo 
+* 'expressao.c' para criar a calculadora descrita pelo trabalho.
+*/
 
 void funcao2 (int *n) {
 	t_pilha *pilha = getPilha(30);
@@ -95,6 +110,10 @@ void funcao2 (int *n) {
 
 	drawMenu(n);
 }
+
+/**
+* Função principal.
+*/
 
 int main () {
 	int n;

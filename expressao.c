@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "funcoes.h"
 
+/**
+* Faz as operações nos elementos da pilha e coloca o resultado em seu topo.
+*/
+
 void operaNumero (t_pilha *pilha, int *i, char string[]) {
 	int primeiro, segundo;
 
@@ -27,6 +31,11 @@ void operaNumero (t_pilha *pilha, int *i, char string[]) {
 	}
 }
 
+/**
+* Empilha os números da string. Transforma números do tipo char com 
+* várias casas em um único inteiro correspondente, quando for o caso.
+*/
+
 void empilhaNumero (t_pilha *pilha, int *i, char string[]) {
 	int n;
 
@@ -38,6 +47,11 @@ void empilhaNumero (t_pilha *pilha, int *i, char string[]) {
 		}
 	}
 }
+
+/**
+* Resolve a expressão posfixa dada, usando os espaços adicionados pela função
+* 'posfixaExpressao' para saber onde um número acaba e outro começa.
+*/
 
 void calculaExpressao (char e_posfixa[]) {
 	t_pilha *pilha = getPilha(50);
@@ -59,6 +73,11 @@ void calculaExpressao (char e_posfixa[]) {
 	liberaPilha(pilha);
 }
 
+/**
+* Recebe um caractere de fechamento de escopo e 
+* retira elementos da pilha até encontrá-lo.
+*/
+
 int desemPilha (t_pilha *pilha, char parentese, char saida[], int *j) {
 	char c;
 	int valida=1;
@@ -71,6 +90,10 @@ int desemPilha (t_pilha *pilha, char parentese, char saida[], int *j) {
 	c = (char) pop(pilha);
 }
 
+/**
+* Após validada, converte a espressão para a notação posfixa, adicionando
+* espaços para facilitar a resolução dela pela função 'calculaExpressao'.
+*/
 
 void posfixaExpressao (char expressao[], int *tamanho, char saida[]) {
 	t_pilha *pilha = getPilha(30);
@@ -136,6 +159,11 @@ void posfixaExpressao (char expressao[], int *tamanho, char saida[]) {
 	getchar();
 	liberaPilha(pilha);
 }
+
+/**
+* Recebe uma expressão no formato string e valida ela quanto aos delimitadores
+* de escopo. Retorna '1' caso seja válida e '0' caso contrário.
+*/
 
 int validaExpressao (char expressao[], int* tamanho) {
 	int valida=1, i=0;
