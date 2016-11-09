@@ -53,7 +53,6 @@ void	 posfixaExpressao (char expressao[], int *tamanho, char saida[]);
  */
 void 	 calculaExpressao (char e_posfixa[]);
 
-
 /**
  * Empilha os números da string. Transforma números do tipo char com 
  * várias casas em um único inteiro correspondente, quando for o caso.
