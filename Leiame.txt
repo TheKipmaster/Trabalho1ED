@@ -1,0 +1,16 @@
+------Felippe Carvalho e Kipman - 16/0027985------
+
+	Para compilar o arquivo apenas use o comando 
+make no terminal, ou compile os arquivos "expressao.c"
+e "pilha.c" como arquivos objeto e por último o
+arquivo "main.c", linkando-o aos dois anteriores.
+	Se compilado por meio do makefile fornecido, 
+um executável chamado "Calculadora_Polonesa" será
+criado.
+	Versão do compilador: gcc 5.4.0
+	SO: Ubuntu 16.04 64-bit
+	Bibliotecas utilizadas: 
+		stdio.h
+		stdlib.h
+		string.h
+		funcoes.h (fornecida)
